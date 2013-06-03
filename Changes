@@ -1,4 +1,6 @@
-Revision history for TSQL::AST
+Revision history for SSIS::Package
 
 1.00    22/05/13
         First version, released on an unsuspecting world. 
+1.00_03 03/06/13
+        Corrections to build files etc.
