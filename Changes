@@ -4,3 +4,5 @@ Revision history for SSIS::Package
         First version, released on an unsuspecting world. 
 1.00_03 03/06/13
         Corrections to build files etc.
+1.00_04 05/06/13
+        Corrections to ADONET.pm
