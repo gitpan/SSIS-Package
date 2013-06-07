@@ -27,6 +27,7 @@ WriteMakefile(
         'XML::CompactTree::XS'          => 0,
         'XML::LibXML::Reader'           => 0,
         'autodie'                       => 0,
+        'parent'                        => 0,   # everything needs this ( on bsd anyway)
         'indirect'                      => 0,
         'version'                       => 0,
     },

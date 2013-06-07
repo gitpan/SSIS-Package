@@ -6,3 +6,5 @@ Revision history for SSIS::Package
         Corrections to build files etc.
 1.00_04 05/06/13
         Corrections to ADONET.pm
+1.00_05 07/06/13
+        Added missing parent.pm to manifest to support OpenBSD.

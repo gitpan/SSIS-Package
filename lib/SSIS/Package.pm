@@ -16,11 +16,11 @@ SSIS::Package - Report on SSIS packages by Ded MedVed
 
 =head1 VERSION
 
-Version 1.00_04
+Version 1.00_05
 
 =cut
 
-our $VERSION = '1.00_04';
+our $VERSION = '1.00_05';
 
 
 use autodie qw(:all);

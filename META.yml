@@ -31,6 +31,7 @@ requires:
   XML::Simple: 0
   autodie: 0
   indirect: 0
+  parent: 0
   perl: 0
   version: 0
-version: 1.00_04
+version: 1.00_05
