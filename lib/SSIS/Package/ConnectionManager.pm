@@ -1,14 +1,9 @@
 package SSIS::Package::ConnectionManager;
 
 use 5.010;
-use strict;
-use warnings;
-use XML::Simple ; #qw(:strict);
-#use XML::LibXML;
-use XML::CompactTree::XS;
-use XML::LibXML::Reader;
+use Mouse;
 
-
+use Carp;
 
 =head1 NAME
 
@@ -16,47 +11,26 @@ SSIS::Package::ConnectionManager - Base class for SSIS package connection manage
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
-
-use autodie qw(:all);
+#use autodie qw(:all);
 
 #TODO 0. 
 
-use Data::Dumper ;
-use Carp ;
 
-sub new {
+has 'ConnectionString' => (
+    is  => 'ro'
+,   isa => 'Str'
+);
 
-    local $_ ;
-
-    my $invocant         = shift ;
-    my $class            = ref($invocant) || $invocant ;
-
-    my @elems            = @_ ;
-    my $self             = bless {}, $class ;
-
-    $self->_init(@elems) ;
-    
-    return $self ;
-}
-
-
-sub _init {
-
-    local $_ ;
-
-    my $self                = shift ;
-    my $class               = ref($self) || $self ;
-
-    return ;
-
-}
-
+has 'Name' => (
+    is  => 'ro'
+,   isa => 'Str'
+);
 
 
 1 ;

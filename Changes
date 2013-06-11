@@ -8,3 +8,7 @@ Revision history for SSIS::Package
         Corrections to ADONET.pm
 1.00_05 07/06/13
         Added missing parent.pm to manifest to support OpenBSD.
+1.00_06 07/06/13
+        Migrated to Mouse.
+1.00_07 11/06/13
+        Interim build.

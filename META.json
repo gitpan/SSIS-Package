@@ -38,6 +38,7 @@
             "IPC::System::Simple" : "0",
             "List::MoreUtils" : "0",
             "List::Util" : "0",
+            "Mouse" : "0",
             "Test::Deep" : "0",
             "Test::More" : "0",
             "XML::CompactTree::XS" : "0",
@@ -45,12 +46,11 @@
             "XML::Simple" : "0",
             "autodie" : "0",
             "indirect" : "0",
-            "parent" : "0",
             "perl" : "0",
             "version" : "0"
          }
       }
    },
    "release_status" : "testing",
-   "version" : "1.00_05"
+   "version" : "1.00_07"
 }

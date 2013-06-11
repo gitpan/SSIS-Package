@@ -1,14 +1,14 @@
 package SSIS::Package;
 
 use 5.010;
-use strict;
-use warnings;
+use Mouse;
+
 use XML::Simple ; #qw(:strict);
 #use XML::LibXML;
 use XML::CompactTree::XS;
 use XML::LibXML::Reader;
 
-
+use Carp;
 
 =head1 NAME
 
@@ -16,48 +16,24 @@ SSIS::Package - Report on SSIS packages by Ded MedVed
 
 =head1 VERSION
 
-Version 1.00_05
+Version 1.00_07
 
 =cut
 
-our $VERSION = '1.00_05';
+our $VERSION = '1.00_07';
+
+has 'file' => (
+    is  => 'rw'
+,   isa => 'Str'
+);
+has 'parsedssiscode' => (
+    is  => 'rw'
+);
 
 
-use autodie qw(:all);
-
-#TODO 0. 
-
-use Data::Dumper ;
-use Carp ;
-
-sub new {
-
-    local $_ ;
-
-    my $invocant         = shift ;
-    my $class            = ref($invocant) || $invocant ;
-
-    my @elems            = @_ ;
-    my $self             = bless {}, $class ;
-
-    $self->_init(@elems) ;
-    return $self ;
-}
-
-
-sub _init {
-
-    local $_ ;
-
-    my $self                = shift ;
-    my $class               = ref($self) || $self ;
-
-    $self->{FILE}           = undef;
-    $self->{PARSEDSSISCODE} = undef;
-    
-    return ;
-
-}
+sub BUILD {
+    my ($self) = @_;
+} ;
 
 sub parse {
 
@@ -67,17 +43,20 @@ sub parse {
     my $class               = ref($self) || $self ;
     my $filename            = shift or croak "no filename";
     
-    $self->{FILE}           = $filename;
+    $self->file($filename);
 #    my $reader              = XML::LibXML::Reader->new(location => $filename);    
 #    my %ns;    
 #    $self->{PARSEDSSISCODE} = XML::CompactTree::XS::readSubtreeToPerl( $reader, XCT_KEEP_NS_DECLS |XCT_DOCUMENT_ROOT|XCT_ATTRIBUTE_ARRAY , \%ns );
-    $self->{PARSEDSSISCODE} = XMLin($filename);
-    return $self->{PARSEDSSISCODE} ;
+    $self->parsedssiscode(XMLin($filename,ForceArray => [ 'DTS:Executable'  ]));
+    return $self->parsedssiscode() ;
 }
 
 
-1 ;
 
+__PACKAGE__->meta->make_immutable();
+
+
+1; 
 __DATA__
 
 
