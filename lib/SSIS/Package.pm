@@ -16,11 +16,11 @@ SSIS::Package - Report on SSIS packages by Ded MedVed
 
 =head1 VERSION
 
-Version 1.00_07
+Version 1.00_08
 
 =cut
 
-our $VERSION = '1.00_07';
+our $VERSION = '1.00_08';
 
 has 'file' => (
     is  => 'rw'

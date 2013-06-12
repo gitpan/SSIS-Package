@@ -45,11 +45,11 @@ lib/SSIS/Package/DTSTask/SEQUENCE.pm
 lib/SSIS/Package/DTSTask/ActiveXScriptTask.pm
 lib/SSIS/Package/DTSTask/ASExecuteDDLTask.pm
 lib/SSIS/Package/DTSTask/DTSProcessingTask.pm
-lib/SSIS/Package/DTSTask/EnhancedExecutePackageTask.pm;
-lib/SSIS/Package/DTSTask/Exec80PackageTask.pm;
-lib/SSIS/Package/DTSTask/SSISSFTTask.pm;
-lib/SSIS/Package/DTSTask/DbMaintenanceBackupTask.pm;
-lib/SSIS/Package/DTSTask/DbMaintenanceCheckIntegrityTask.pm;
+lib/SSIS/Package/DTSTask/EnhancedExecutePackageTask.pm
+lib/SSIS/Package/DTSTask/Exec80PackageTask.pm
+lib/SSIS/Package/DTSTask/SSISSFTTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceBackupTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceCheckIntegrityTask.pm
 
 
 Makefile.PL

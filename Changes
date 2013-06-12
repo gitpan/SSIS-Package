@@ -12,3 +12,5 @@ Revision history for SSIS::Package
         Migrated to Mouse.
 1.00_07 11/06/13
         Interim build.
+1.00_08 12/06/13
+        Fixed MANIFEST.
