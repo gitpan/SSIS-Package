@@ -1,3 +1,10 @@
+has 'TaskContact' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
+
+
 package SSIS::Package::DTSTask::ExpressionTask;
 
 use 5.010;

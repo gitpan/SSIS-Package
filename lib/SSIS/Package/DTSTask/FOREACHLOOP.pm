@@ -17,6 +17,12 @@ Version 0.01
 
 our $VERSION = '0.01';
 
+has 'MaxConcurrent' => (
+    is  => 'ro'
+,   isa => 'Num'
+,   required => 1
+);
+
 
 
 1 ;

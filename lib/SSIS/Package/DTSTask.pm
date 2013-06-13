@@ -17,10 +17,106 @@ Version 0.01
 
 our $VERSION = '0.01';
 
-has 'Name' => (
+has 'CreationName' => (
     is  => 'ro'
-,   isa => 'Str'
+,   isa => 'Maybe[Str]'
+,   required => 1
 );
+
+has 'DTSID' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
+
+has 'DelayValidation' => (
+    is  => 'ro'
+,   isa => 'Maybe[Bool]'
+,   required => 1
+);
+
+has 'Description' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
+
+has 'DisableEventHandlers' => (
+    is  => 'ro'
+,   isa => 'Maybe[Bool]'
+,   required => 1
+);
+
+has 'Disabled' => (
+    is  => 'ro'
+,   isa => 'Maybe[Bool]'
+,   required => 1
+);
+
+has 'ExecValue' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
+
+has 'FailPackageOnFailure' => (
+    is  => 'ro'
+,   isa => 'Maybe[Int]'
+,   required => 1
+);
+
+has 'FailParentOnFailure' => (
+    is  => 'ro'
+,   isa => 'Maybe[Int]'
+,   required => 1
+);
+
+has 'ForceExecValue' => (
+    is  => 'ro'
+,   isa => 'Maybe[Int]'
+,   required => 1
+);
+
+has 'ForceExecutionResult' => (
+    is  => 'ro'
+,   isa => 'Maybe[Int]'
+,   required => 1
+);
+
+has 'ISOLevel' => (
+    is  => 'ro'
+,   isa => 'Maybe[Int]'
+,   required => 1
+);
+
+has 'LocaleID' => (
+    is  => 'ro'
+,   isa => 'Maybe[Int]'
+,   required => 1
+);
+
+has 'MaxErrorCount' => (
+    is  => 'ro'
+,   isa => 'Maybe[Int]'
+,   required => 1
+);
+
+has 'ObjectName' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
+
+
+
+has 'TransactionOption' => (
+    is  => 'ro'
+,   isa => 'Maybe[Int]'
+,   required => 1
+);
+
+
+
 
 
 __PACKAGE__->meta->make_immutable();

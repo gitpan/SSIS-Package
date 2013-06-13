@@ -1,4 +1,4 @@
-package SSIS::Package::DTSTask::FileSystemTask;
+package SSIS::Package::DTSTask::DbMaintenanceReindexTask;
 
 use 5.010;
 use Mouse;
@@ -7,7 +7,7 @@ extends 'SSIS::Package::DTSTask';
 
 =head1 NAME
 
-SSIS::Package::DTSTask::FileSystemTask - SSIS package task FileSystemTask by Ded MedVed
+SSIS::Package::DTSTask::DbMaintenanceReindexTask - SSIS package task DbMaintenanceReindexTask by Ded MedVed
 
 =head1 VERSION
 
@@ -42,5 +42,5 @@ has 'TaskContact' => (
 
 __DATA__
 
-1; # End of SSIS::Package::DTSTask::FileSystemTask
+1; # End of SSIS::Package::DTSTask::DbMaintenanceReindexTask
 

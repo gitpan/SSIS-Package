@@ -14,3 +14,5 @@ Revision history for SSIS::Package
         Interim build.
 1.00_08 12/06/13
         Fixed MANIFEST.
+1.00_09 12/06/13
+        Updated connectors and task properties.

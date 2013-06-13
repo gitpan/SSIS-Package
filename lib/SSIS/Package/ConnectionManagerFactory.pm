@@ -11,12 +11,19 @@ use SSIS::Package::ConnectionManager::MSMQ;
 use SSIS::Package::ConnectionManager::OLEDB;
 use SSIS::Package::ConnectionManager::SMOServer;
 use SSIS::Package::ConnectionManager::SMTP;
+use SSIS::Package::ConnectionManager::ADO;
+use SSIS::Package::ConnectionManager::MSOLAP100;
+use SSIS::Package::ConnectionManager::CACHE;
+use SSIS::Package::ConnectionManager::FTP;
+use SSIS::Package::ConnectionManager::HTTP;
+use SSIS::Package::ConnectionManager::MULTIFLATFILE;
+use SSIS::Package::ConnectionManager::MULTIFILE;
+use SSIS::Package::ConnectionManager::ODBC;
+use SSIS::Package::ConnectionManager::WMI;
+use SSIS::Package::ConnectionManager::SQLMOBILE;
 
 
 use XML::Simple ; #qw(:strict);
-#use XML::LibXML;
-use XML::CompactTree::XS;
-use XML::LibXML::Reader;
 
 use Data::Dumper;
 use Data::Printer;
@@ -57,43 +64,48 @@ sub make {
     # fix up crappy invalid character in .net name;
     if ($objType =~ m{ \A ADO\.NET}x )  { $objType = "ADONET" } ;
     
-    if ($objType =~ m{\A(ADONET|EXCEL|FILE|FLATFILE|MSMQ|OLEDB|SMOServer|SMTP)\z} ) {
-            my @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:Property'}};
-            my $connstr = $connstr[0]->{content};
-            my @name    = grep { $_->{'DTS:Name'} eq 'ObjectName' }        @{$xml->{'DTS:Property'}};
-            my $name    = $name[0]->{content};
-#warn Dumper $connstr, $name ;
-    
-        if ($objType eq "ADONET" ) {
-            $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
+    if ($objType =~ m{\A (ADO|ADONET|CACHE|EXCEL|FILE|FTP|FLATFILE|HTTP|MSMQ|MSOLAP100|MULTIFILE|MULTIFLATFILE|ODBC|OLEDB|SMOServer|SMTP|SQLMOBILE|WMI) \z}x ) {
+
+        my @connstr;
+        my $connstr;
+        my @name;
+        my $name;
+
+        if ($objType eq 'FTP' ) {
+            @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:FtpConnection'}->{'DTS:Property'}};
+            $connstr = $connstr[0]->{content};
         }
-        if ($objType eq "EXCEL" ) {
-            $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
+        elsif ($objType eq 'HTTP' ) {
+            @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:HttpConnection'}->{'DTS:Property'}};
+            $connstr = $connstr[0]->{content};
         }
-        if ($objType eq "FILE" ) {
-            $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
+        elsif ($objType eq 'WMI' ) {
+            $connstr = $xml->{'DTS:ObjectData'}->{'WmiConnectionManager'}->{'ConnectionString'};
         }
-        if ($objType eq "FLATFILE" ) {
-#warn Dumper $xml;
-            $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
-        }
-        if ($objType eq "MSMQ" ) {
-#warn Dumper $xml;
+        elsif ($objType eq "MSMQ" ) {
             $connstr        = $xml->{'DTS:ObjectData'}->{'MsmqConnectionManager'}->{'ConnectionString'};
-            $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
         }
-        if ($objType eq "OLEDB" ) {
-            $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
-        }
-        if ($objType eq "SMOServer" ) {
-#warn Dumper $xml;        
+        elsif ($objType eq "SMOServer" ) {
             $connstr        = $xml->{'DTS:ObjectData'}->{'SMOServerConnectionManager'}->{'ConnectionString'};
-            $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
         }
-        if ($objType eq "SMTP" ) {
+        elsif ($objType eq "SMTP" ) {
             $connstr        = $xml->{'DTS:ObjectData'}->{'SmtpConnectionManager'}->{'ConnectionString'};
-            $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
         }
+        else {
+            if ( ref($xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:Property'}) eq 'ARRAY' ) {
+                @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:Property'}};
+                $connstr = $connstr[0]->{content};
+            } 
+            else {
+                $connstr = $xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:Property'}->{content};
+            }
+        }
+        @name    = grep { $_->{'DTS:Name'} eq 'ObjectName' }        @{$xml->{'DTS:Property'}};
+        $name    = $name[0]->{content};
+            
+
+        $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
+
     }
     else {
         croak "Unknown connection type $objType.";

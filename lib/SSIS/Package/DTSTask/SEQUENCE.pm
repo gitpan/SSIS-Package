@@ -17,6 +17,11 @@ Version 0.01
 
 our $VERSION = '0.01';
 
+has 'LockName' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
 
 
 1 ;

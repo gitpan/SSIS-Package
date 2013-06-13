@@ -1,6 +1,6 @@
 #!perl -T
 
-use Test::More tests => 47;
+use Test::More tests => 66;
 
 BEGIN {
 
@@ -15,7 +15,17 @@ BEGIN {
     use_ok( 'SSIS::Package::ConnectionManager::OLEDB' )                     || print "Bail out!\n";
     use_ok( 'SSIS::Package::ConnectionManager::SMOServer' )                 || print "Bail out!\n";
     use_ok( 'SSIS::Package::ConnectionManager::SMTP' )                      || print "Bail out!\n";
-
+    
+    use_ok( 'SSIS::Package::ConnectionManager::ADO' )                       || print "Bail out!\n";
+    use_ok( 'SSIS::Package::ConnectionManager::MSOLAP100' )                 || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::ConnectionManager::CACHE' )                     || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::ConnectionManager::FTP' )                       || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::ConnectionManager::HTTP' )                      || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::ConnectionManager::MULTIFLATFILE')              || print "Bail out!\n";
+    use_ok( 'SSIS::Package::ConnectionManager::MULTIFILE')                  || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::ConnectionManager::ODBC')                       || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::ConnectionManager::SQLMOBILE')                  || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::ConnectionManager::WMI')                        || print "Bail out!\n";        
 
     use_ok( 'SSIS::Package::DTSTask' )                                      || print "Bail out!\n";
     use_ok( 'SSIS::Package::DTSTaskFactory' )                               || print "Bail out!\n";
@@ -55,6 +65,15 @@ BEGIN {
     use_ok( 'SSIS::Package::DTSTask::SSISSFTTask' )                         || print "Bail out!\n";    
     use_ok( 'SSIS::Package::DTSTask::DbMaintenanceBackupTask' )             || print "Bail out!\n";        
     use_ok( 'SSIS::Package::DTSTask::DbMaintenanceCheckIntegrityTask' )     || print "Bail out!\n";            
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceExecuteAgentJobTask' )    || print "Bail out!\n";                
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceTSQLExecuteTask' )        || print "Bail out!\n";                    
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceHistoryCleanupTask' )     || print "Bail out!\n";                    
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceFileCleanupTask' )        || print "Bail out!\n";     
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceNotifyOperatorTask' )     || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceReindexTask' )            || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceDefragmentIndexTask' )    || print "Bail out!\n";    
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceShrinkTask' )             || print "Bail out!\n";  
+    use_ok( 'SSIS::Package::DTSTask::DbMaintenanceUpdateStatisticsTask' )   || print "Bail out!\n";    
     
 }
 

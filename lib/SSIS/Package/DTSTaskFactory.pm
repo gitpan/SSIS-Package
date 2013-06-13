@@ -39,6 +39,15 @@ use SSIS::Package::DTSTask::Exec80PackageTask;
 use SSIS::Package::DTSTask::SSISSFTTask;
 use SSIS::Package::DTSTask::DbMaintenanceBackupTask;
 use SSIS::Package::DTSTask::DbMaintenanceCheckIntegrityTask;
+use SSIS::Package::DTSTask::DbMaintenanceExecuteAgentJobTask;
+use SSIS::Package::DTSTask::DbMaintenanceTSQLExecuteTask;
+use SSIS::Package::DTSTask::DbMaintenanceHistoryCleanupTask;
+use SSIS::Package::DTSTask::DbMaintenanceFileCleanupTask;
+use SSIS::Package::DTSTask::DbMaintenanceNotifyOperatorTask;
+use SSIS::Package::DTSTask::DbMaintenanceReindexTask;
+use SSIS::Package::DTSTask::DbMaintenanceDefragmentIndexTask;
+use SSIS::Package::DTSTask::DbMaintenanceShrinkTask;
+use SSIS::Package::DTSTask::DbMaintenanceUpdateStatisticsTask;
 
 
 use XML::Simple ; #qw(:strict);
@@ -91,8 +100,8 @@ sub make {
 #    my $name    = $name[0]->{content};
 
     my $objType = $rh_args->{type} ;
-    my @name    = grep { $_->{'DTS:Name'} eq 'ObjectName' }    @{$rh_args->{properties}};    
-    my $name    = $name[0]->{content};
+#    my @name    = grep { $_->{'DTS:Name'} eq 'ObjectName' }    @{$rh_args->{properties}};    
+#    my $name    = $name[0]->{content};
 
 #warn Dumper $objType;
 #warn Dumper $name;
@@ -130,8 +139,13 @@ sub make {
         $objType = "ExecutePackageTask2" ; 
     }
 
+
+    my @valrefs = map { ( $_->{'DTS:Name'},$_->{'content'} ) ;} @{$rh_args->{properties}}; #@{$x->{'DTS:Property'}};
+
 #warn Dumper $objType ;
-    $task = "SSIS::Package::DTSTask::${objType}"->new( { 'Name' => $name } );    
+#    $task = "SSIS::Package::DTSTask::${objType}"->new( { 'Name' => $name } );    
+#warn Dumper @valrefs;
+    $task = "SSIS::Package::DTSTask::${objType}"->new( { (@valrefs) }  );    
     
     #if ($objType =~ m{\A(ADONET|EXCEL|FILE|FLATFILE|MSMQ|OLEDB|SMOServer|SMTP)\z} ) {
 #            my @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:Property'}};

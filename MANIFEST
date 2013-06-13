@@ -12,6 +12,18 @@ lib/SSIS/Package/ConnectionManager/OLEDB.pm
 lib/SSIS/Package/ConnectionManager/SMOServer.pm
 lib/SSIS/Package/ConnectionManager/SMTP.pm
 
+lib/SSIS/Package/ConnectionManager/ADO.pm
+lib/SSIS/Package/ConnectionManager/MSOLAP100.pm
+lib/SSIS/Package/ConnectionManager/CACHE.pm
+lib/SSIS/Package/ConnectionManager/FTP.pm
+lib/SSIS/Package/ConnectionManager/HTTP.pm
+lib/SSIS/Package/ConnectionManager/MULTIFLATFILE.pm
+lib/SSIS/Package/ConnectionManager/MULTIFILE.pm
+lib/SSIS/Package/ConnectionManager/ODBC.pm
+lib/SSIS/Package/ConnectionManager/SQLMOBILE.pm
+lib/SSIS/Package/ConnectionManager/WMI.pm
+
+
 lib/SSIS/Package/DTSTask.pm
 lib/SSIS/Package/DTSTaskFactory.pm
 lib/SSIS/Package/DTSTask/BulkInsertTask.pm
@@ -50,7 +62,15 @@ lib/SSIS/Package/DTSTask/Exec80PackageTask.pm
 lib/SSIS/Package/DTSTask/SSISSFTTask.pm
 lib/SSIS/Package/DTSTask/DbMaintenanceBackupTask.pm
 lib/SSIS/Package/DTSTask/DbMaintenanceCheckIntegrityTask.pm
-
+lib/SSIS/Package/DTSTask/DbMaintenanceExecuteAgentJobTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceTSQLExecuteTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceHistoryCleanupTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceFileCleanupTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceNotifyOperatorTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceReindexTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceDefragmentIndexTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceShrinkTask.pm
+lib/SSIS/Package/DTSTask/DbMaintenanceUpdateStatisticsTask.pm
 
 Makefile.PL
 MANIFEST				This list of files

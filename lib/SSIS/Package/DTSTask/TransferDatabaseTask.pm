@@ -17,6 +17,25 @@ Version 0.01
 
 our $VERSION = '0.01';
 
+has 'ExecutionAddress' => (
+    is  => 'ro'
+,   isa => 'Maybe[Num]'
+,   required => 1
+);
+
+has 'ExecutionLocation' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
+
+has 'TaskContact' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
+
+
 
 
 1 ;
