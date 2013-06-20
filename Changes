@@ -16,3 +16,6 @@ Revision history for SSIS::Package
         Fixed MANIFEST.
 1.00_09 12/06/13
         Updated connectors and task properties.
+0.01    20/06/13
+        Many, many changes.  Reverted versioning to something more appropriate.
+        First non-developer release.

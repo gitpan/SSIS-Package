@@ -11,26 +11,54 @@ SSIS::Package::ConnectionManager - Base class for SSIS package connection manage
 
 =head1 VERSION
 
-Version 0.03
+Version 0.04
 
 =cut
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 #use autodie qw(:all);
 
 #TODO 0. 
 
 
+has 'CreationName' => (
+    is  => 'ro'
+,   isa => 'Str'
+,   required => 1
+);
+
+has 'ObjectName' => (
+    is  => 'ro'
+,   isa => 'Str'
+,   required => 1
+);
+
+has 'DelayValidation' => (
+    is  => 'ro'
+,   isa => 'Num'
+,   required => 1
+);
+
+has 'Description' => (
+    is  => 'ro'
+,   isa => 'Maybe[Str]'
+,   required => 1
+);
+
+has 'DTSID' => (
+    is  => 'ro'
+,   isa => 'Str'
+,   required => 1
+);
+
 has 'ConnectionString' => (
     is  => 'ro'
 ,   isa => 'Maybe[Str]'
+,   required => 0
 );
 
-has 'Name' => (
-    is  => 'ro'
-,   isa => 'Str'
-);
+
 
 
 1 ;

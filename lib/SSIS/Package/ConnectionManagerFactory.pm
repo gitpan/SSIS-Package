@@ -53,17 +53,15 @@ sub make {
     my ($self) = shift;
     croak 'Invalid call' unless defined $self;
  
-    my $xml = $_[0] ;
-#warn Dumper $xml;    
-    my @type = grep { $_->{'DTS:Name'} eq 'CreationName' }  @{$xml->{'DTS:Property'}};
-#warn Dumper @type;
-    
-    my $connectManager ;
-    my $objType = $type[0]->{content};
-    
+    my $rh_args         = $_[0];
+    my $objType         = $rh_args->{type} ;
+    my $objectData      = $rh_args->{objectData} ;
+
     # fix up crappy invalid character in .net name;
     if ($objType =~ m{ \A ADO\.NET}x )  { $objType = "ADONET" } ;
     
+    my $connectManager;
+ 
     if ($objType =~ m{\A (ADO|ADONET|CACHE|EXCEL|FILE|FTP|FLATFILE|HTTP|MSMQ|MSOLAP100|MULTIFILE|MULTIFLATFILE|ODBC|OLEDB|SMOServer|SMTP|SQLMOBILE|WMI) \z}x ) {
 
         my @connstr;
@@ -72,39 +70,41 @@ sub make {
         my $name;
 
         if ($objType eq 'FTP' ) {
-            @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:FtpConnection'}->{'DTS:Property'}};
+            @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$objectData->{'DTS:ConnectionManager'}->{'DTS:FtpConnection'}->{'DTS:Property'}};
             $connstr = $connstr[0]->{content};
         }
         elsif ($objType eq 'HTTP' ) {
-            @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:HttpConnection'}->{'DTS:Property'}};
+            @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$objectData->{'DTS:ConnectionManager'}->{'DTS:HttpConnection'}->{'DTS:Property'}};
             $connstr = $connstr[0]->{content};
         }
         elsif ($objType eq 'WMI' ) {
-            $connstr = $xml->{'DTS:ObjectData'}->{'WmiConnectionManager'}->{'ConnectionString'};
+            $connstr = $objectData->{'WmiConnectionManager'}->{'ConnectionString'};
         }
         elsif ($objType eq "MSMQ" ) {
-            $connstr        = $xml->{'DTS:ObjectData'}->{'MsmqConnectionManager'}->{'ConnectionString'};
+            $connstr        = $objectData->{'MsmqConnectionManager'}->{'ConnectionString'};
         }
         elsif ($objType eq "SMOServer" ) {
-            $connstr        = $xml->{'DTS:ObjectData'}->{'SMOServerConnectionManager'}->{'ConnectionString'};
+            $connstr        = $objectData->{'SMOServerConnectionManager'}->{'ConnectionString'};
         }
         elsif ($objType eq "SMTP" ) {
-            $connstr        = $xml->{'DTS:ObjectData'}->{'SmtpConnectionManager'}->{'ConnectionString'};
+            $connstr        = $objectData->{'SmtpConnectionManager'}->{'ConnectionString'};
         }
         else {
-            if ( ref($xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:Property'}) eq 'ARRAY' ) {
-                @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:Property'}};
+            if ( ref($objectData->{'DTS:ConnectionManager'}->{'DTS:Property'}) eq 'ARRAY' ) {
+                @connstr = grep { $_->{'DTS:Name'} eq 'ConnectionString' }  @{$objectData->{'DTS:ConnectionManager'}->{'DTS:Property'}};
                 $connstr = $connstr[0]->{content};
             } 
             else {
-                $connstr = $xml->{'DTS:ObjectData'}->{'DTS:ConnectionManager'}->{'DTS:Property'}->{content};
+                $connstr = $objectData->{'DTS:ConnectionManager'}->{'DTS:Property'}->{content};
             }
         }
-        @name    = grep { $_->{'DTS:Name'} eq 'ObjectName' }        @{$xml->{'DTS:Property'}};
-        $name    = $name[0]->{content};
-            
 
-        $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { 'Name' => $name, 'ConnectionString' => $connstr } );    
+        my @valrefs = map { ( $_->{'DTS:Name'},$_->{'content'} ) ;} @{$rh_args->{properties}}; 
+        
+        # add connection string
+        push @valrefs, 'ConnectionString' , $connstr ;
+
+        $connectManager = "SSIS::Package::ConnectionManager::${objType}"->new( { (@valrefs) } );    
 
     }
     else {

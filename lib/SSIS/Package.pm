@@ -8,6 +8,8 @@ use XML::Simple ; #qw(:strict);
 use XML::CompactTree::XS;
 use XML::LibXML::Reader;
 
+use Data::Dumper;
+
 use Carp;
 
 =head1 NAME
@@ -16,18 +18,35 @@ SSIS::Package - Report on SSIS packages by Ded MedVed
 
 =head1 VERSION
 
-Version 1.00_09
+Version 0.01
 
 =cut
 
-our $VERSION = '1.00_09';
+our $VERSION = '0.01';
 
 has 'file' => (
-    is  => 'rw'
-,   isa => 'Str'
+    is          => 'rw'
+,   isa          => 'Str'
 );
 has 'parsedssiscode' => (
-    is  => 'rw'
+    is          => 'rw'
+);
+
+
+has 'connectorsXML' => (
+    is          => 'rw'
+);
+
+has 'tasksXML' => (
+    is          => 'rw'
+);
+
+has 'connectors' => (
+    is          => 'rw'
+);
+
+has 'tasks' => (
+    is          => 'rw'
 );
 
 
@@ -44,11 +63,50 @@ sub parse {
     my $filename            = shift or croak "no filename";
     
     $self->file($filename);
-#    my $reader              = XML::LibXML::Reader->new(location => $filename);    
-#    my %ns;    
-#    $self->{PARSEDSSISCODE} = XML::CompactTree::XS::readSubtreeToPerl( $reader, XCT_KEEP_NS_DECLS |XCT_DOCUMENT_ROOT|XCT_ATTRIBUTE_ARRAY , \%ns );
     $self->parsedssiscode(XMLin($filename,ForceArray => [ 'DTS:Executable'  ]));
-    return $self->parsedssiscode() ;
+    
+    my $stuff               = $self->parsedssiscode() ;
+
+    my @connectorsXML ;
+    foreach my $k (keys %{$stuff}) {
+        if ( $k eq 'DTS:ConnectionManager' ) {
+            foreach my $item (@{$stuff->{$k}} ) {
+                push @connectorsXML, $item ;
+            }
+        }
+    } 
+    $self->connectorsXML(\@connectorsXML);    
+
+    
+    my @connectors ;
+    foreach my $conn (@connectorsXML) {
+        my @type = grep { $_->{'DTS:Name'} eq 'CreationName' }  @{$conn->{'DTS:Property'}};
+        my $type = $type[0]->{'content'};
+        my $obj = SSIS::Package::ConnectionManagerFactory->make( { type => $type , properties =>  $conn->{'DTS:Property'} , objectData => $conn->{'DTS:ObjectData'} });
+        push @connectors, $obj;
+    }
+    $self->connectors(\@connectors);    
+    
+    my @tasksXML;
+    foreach my $k (keys %{$stuff}) {
+        if ( $k eq 'DTS:Executable' ) {
+            foreach my $item (@{$stuff->{$k}} ) {
+                push @tasksXML, $item ;
+            }                
+        }
+    }        
+    $self->tasksXML(\@tasksXML);    
+
+    my @tasks ;
+    foreach my $task (@tasksXML) {
+        my @type = grep { $_->{'DTS:Name'} eq 'CreationName' }  @{$task->{'DTS:Property'}};
+        my $type = $type[0]->{'content'};
+        my $obj = SSIS::Package::DTSTaskFactory->make( { type => $task->{'DTS:ExecutableType'}, properties =>  $task->{'DTS:Property'} } );
+        push @tasks, $obj;
+    }
+    $self->tasks(\@tasks);    
+
+    
 }
 
 

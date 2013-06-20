@@ -49,7 +49,6 @@ use SSIS::Package::DTSTask::DbMaintenanceDefragmentIndexTask;
 use SSIS::Package::DTSTask::DbMaintenanceShrinkTask;
 use SSIS::Package::DTSTask::DbMaintenanceUpdateStatisticsTask;
 
-
 use XML::Simple ; #qw(:strict);
 #use XML::LibXML;
 use XML::CompactTree::XS;
