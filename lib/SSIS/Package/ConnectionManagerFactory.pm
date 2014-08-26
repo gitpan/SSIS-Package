@@ -40,9 +40,6 @@ Version 0.01
 
 =cut
 
-our $VERSION = '0.01';
-
-
 
 use autodie qw(:all);
 

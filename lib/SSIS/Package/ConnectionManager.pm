@@ -15,8 +15,6 @@ Version 0.04
 
 =cut
 
-our $VERSION = '0.04';
-
 #use autodie qw(:all);
 
 #TODO 0. 

@@ -48,6 +48,7 @@ use SSIS::Package::DTSTask::DbMaintenanceReindexTask;
 use SSIS::Package::DTSTask::DbMaintenanceDefragmentIndexTask;
 use SSIS::Package::DTSTask::DbMaintenanceShrinkTask;
 use SSIS::Package::DTSTask::DbMaintenanceUpdateStatisticsTask;
+use SSIS::Package::DTSTaskConnection;
 
 use XML::Simple ; #qw(:strict);
 #use XML::LibXML;
@@ -65,11 +66,11 @@ SSIS::Package::DTSTaskFactory - Factory class for SSIS package DTS tasks by Ded 
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+
 
 
 
@@ -85,8 +86,8 @@ sub make {
 #    my $xml = $_[0] ;
 #warn Dumper $xml;   
     my $rh_args = $_[0];
-
-#my $obj = SSIS::Package::DTSTaskFactory->make( { type => $x->{'DTS:ExecutableType'}, properties =>  $x->{'DTS:Property'} );
+#warn Dumper $rh_args;   
+#my $obj = SSIS::Package::DTSTaskFactory->make( { type => $x->{'DTS:ExecutableType'}, properties =>  $x->{'DTS:Property'}, connectors => \@connectors  );
 
     
 #    my @type    = grep { $_->{'DTS:Name'} eq 'CreationName' }  @{$xml->{'DTS:Property'}};
@@ -105,6 +106,31 @@ sub make {
 #warn Dumper $objType;
 #warn Dumper $name;
 
+    my @connectors;
+#warn Dumper $rh_args->{connectors};
+    foreach my $c (@{$rh_args->{connectors}}) {
+#warn Dumper $c;
+#warn Dumper ref($c);
+        if ( ref($c) eq 'ARRAY' ) {
+            foreach my $member (@{$c}) {
+                if ( ref($member) eq 'ARRAY' ) {
+                    foreach my $mem2 (@{$member}) {
+                        my $conn = SSIS::Package::DTSTaskConnection->new($mem2->{connection}) ;
+                        push @connectors, $conn;
+                    }
+                }
+                else {
+#warn Dumper $member;                
+                    my $conn = SSIS::Package::DTSTaskConnection->new($member->{connection}) ;
+                    push @connectors, $conn;
+                }
+            }
+        }
+        else {
+            my $conn = SSIS::Package::DTSTaskConnection->new($c->{connection}) ;
+            push @connectors, $conn;
+        }
+    }
    
     if ( $objType =~ m{\A Microsoft\.SqlServer\.Dts\.Tasks\.(\w+) }xmisg ) {
         $objType  =  $1;
@@ -140,6 +166,7 @@ sub make {
 
 
     my @valrefs = map { ( $_->{'DTS:Name'},$_->{'content'} ) ;} @{$rh_args->{properties}}; #@{$x->{'DTS:Property'}};
+    push @valrefs, 'Connectors', \@connectors;
 
 #warn Dumper $objType ;
 #    $task = "SSIS::Package::DTSTask::${objType}"->new( { 'Name' => $name } );    

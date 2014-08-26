@@ -18,15 +18,15 @@ SSIS::Package - Report on SSIS packages by Ded MedVed
 
 =head1 VERSION
 
-Version 0.01
+Version 0.02
 
 =cut
 
-our $VERSION = '0.01';
+our $VERSION = '0.02';
 
 has 'file' => (
     is          => 'rw'
-,   isa          => 'Str'
+,   isa         => 'Str'
 );
 has 'parsedssiscode' => (
     is          => 'rw'
@@ -63,9 +63,11 @@ sub parse {
     my $filename            = shift or croak "no filename";
     
     $self->file($filename);
-    $self->parsedssiscode(XMLin($filename,ForceArray => [ 'DTS:Executable'  ]));
+    $self->parsedssiscode(XMLin($filename,ForceArray => [ 'DTS:Executable', 'connections'  ]));
     
     my $stuff               = $self->parsedssiscode() ;
+
+#warn Dumper $stuff ;
 
     my @connectorsXML ;
     foreach my $k (keys %{$stuff}) {
@@ -89,6 +91,8 @@ sub parse {
     
     my @tasksXML;
     foreach my $k (keys %{$stuff}) {
+#warn Dumper $k, $stuff->{$k};
+#exit;
         if ( $k eq 'DTS:Executable' ) {
             foreach my $item (@{$stuff->{$k}} ) {
                 push @tasksXML, $item ;
@@ -99,13 +103,44 @@ sub parse {
 
     my @tasks ;
     foreach my $task (@tasksXML) {
+        my @connectors ;
+        $self->parse_getConnectors($task, \@connectors) ;                    
+
         my @type = grep { $_->{'DTS:Name'} eq 'CreationName' }  @{$task->{'DTS:Property'}};
         my $type = $type[0]->{'content'};
-        my $obj = SSIS::Package::DTSTaskFactory->make( { type => $task->{'DTS:ExecutableType'}, properties =>  $task->{'DTS:Property'} } );
+        my $obj = SSIS::Package::DTSTaskFactory->make( { type => $task->{'DTS:ExecutableType'}, properties =>  $task->{'DTS:Property'}, connectors => \@connectors } );
         push @tasks, $obj;
     }
     $self->tasks(\@tasks);    
+   
+}
 
+sub parse_getConnectors {
+
+    local $_ ;
+
+    my $self                = shift ;
+    my $class               = ref($self) || $self ;
+    my $dataTree            = shift ;
+    my $return              = shift ;
+    
+    if  (ref($dataTree)   eq 'HASH' ) {
+        foreach my $k (keys %$dataTree) {
+            if ( $k eq 'connections') {
+                push @$return, $dataTree->{$k} ;
+            }
+            else {
+                $self->parse_getConnectors($dataTree->{$k}, $return );
+            }
+        }
+    }
+    elsif  (ref($dataTree)   eq 'ARRAY' ) {
+        foreach my $r (@$dataTree) {
+            $self->parse_getConnectors($r,$return);
+        }
+    }
+    return ;
+    
     
 }
 

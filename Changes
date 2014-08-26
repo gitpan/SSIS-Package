@@ -19,3 +19,5 @@ Revision history for SSIS::Package
 0.01    20/06/13
         Many, many changes.  Reverted versioning to something more appropriate.
         First non-developer release.
+0.02    26/08/2014
+        Kwalitee gaming.

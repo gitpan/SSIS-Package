@@ -4,6 +4,7 @@ use 5.010;
 use Mouse;
 
 use Carp;
+use SSIS::Package::DTSTaskConnection;
 
 =head1 NAME
 
@@ -14,8 +15,6 @@ SSIS::Package::DTSTask - Report on SSIS package tasks by Ded MedVed
 Version 0.01
 
 =cut
-
-our $VERSION = '0.01';
 
 has 'CreationName' => (
     is  => 'ro'
@@ -107,15 +106,17 @@ has 'ObjectName' => (
 ,   required => 1
 );
 
-
-
 has 'TransactionOption' => (
     is  => 'ro'
 ,   isa => 'Maybe[Int]'
 ,   required => 1
 );
 
-
+has 'Connectors' => (
+    is  => 'ro'
+,   isa => 'ArrayRef[SSIS::Package::DTSTaskConnection]'
+,   required => 1
+);
 
 
 

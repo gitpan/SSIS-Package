@@ -9,7 +9,7 @@ WriteMakefile(
     VERSION_FROM        => 'lib/SSIS/Package.pm',
     ABSTRACT_FROM       => 'lib/SSIS/Package.pm',
     MIN_PERL_VERSION    => 5.10.0,
-    ($ExtUtils::MakeMaker::VERSION >= 6.3002
+    ($ExtUtils::MakeMaker::VERSION >= 6.48
       ? ('LICENSE'=> 'perl')
       : ()),
     PL_FILES            => {},

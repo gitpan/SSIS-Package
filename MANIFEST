@@ -72,6 +72,9 @@ lib/SSIS/Package/DTSTask/DbMaintenanceDefragmentIndexTask.pm
 lib/SSIS/Package/DTSTask/DbMaintenanceShrinkTask.pm
 lib/SSIS/Package/DTSTask/DbMaintenanceUpdateStatisticsTask.pm
 
+lib/ SSIS/Package/DTSTaskConnection.pm
+
+
 Makefile.PL
 MANIFEST				This list of files
 README
