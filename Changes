@@ -21,3 +21,5 @@ Revision history for SSIS::Package
         First non-developer release.
 0.02    26/08/2014
         Kwalitee gaming.
+0.03    27/08/2014
+        Fixed MANIFEST.
