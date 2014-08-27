@@ -5,8 +5,6 @@ lib/SSIS/Package/ConnectionManager.pm
 lib/SSIS/Package/ConnectionManager/ADO.pm
 lib/SSIS/Package/ConnectionManager/ADONET.pm
 lib/SSIS/Package/ConnectionManager/CACHE.pm
-lib/SSIS/Package/ConnectionManager/ConnectionManager.tws
-lib/SSIS/Package/ConnectionManager/ConnectionTypes.txt
 lib/SSIS/Package/ConnectionManager/EXCEL.pm
 lib/SSIS/Package/ConnectionManager/FILE.pm
 lib/SSIS/Package/ConnectionManager/FLATFILE.pm
@@ -41,7 +39,6 @@ lib/SSIS/Package/DTSTask/DbMaintenanceTSQLExecuteTask.pm
 lib/SSIS/Package/DTSTask/DbMaintenanceUpdateStatisticsTask.pm
 lib/SSIS/Package/DTSTask/DMQueryTask.pm
 lib/SSIS/Package/DTSTask/DTSProcessingTask.pm
-lib/SSIS/Package/DTSTask/DTSTask.tws
 lib/SSIS/Package/DTSTask/EnhancedExecutePackageTask.pm
 lib/SSIS/Package/DTSTask/Exec80PackageTask.pm
 lib/SSIS/Package/DTSTask/ExecutePackageTask2.pm
